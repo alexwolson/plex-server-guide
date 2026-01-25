@@ -1,0 +1,28 @@
+# Nordlynx Kill-Switch Systemd Timer
+# ====================================
+#
+# Copy to /etc/systemd/system/nordlynx-killswitch.timer
+#
+# This timer runs the kill-switch script:
+# - 2 minutes after boot (allows VPN to connect)
+# - Every 5 minutes thereafter (handles endpoint changes)
+#
+# After copying:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now nordlynx-killswitch.timer
+
+[Unit]
+Description=Refresh nordlynx kill-switch rules periodically
+
+[Timer]
+# Start 2 minutes after boot
+OnBootSec=2min
+
+# Run every 5 minutes
+OnUnitActiveSec=5min
+
+# The service to trigger
+Unit=nordlynx-killswitch.service
+
+[Install]
+WantedBy=timers.target

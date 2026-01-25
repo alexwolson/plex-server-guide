@@ -1,0 +1,43 @@
+{
+  "_comment": "DDNS Updater Configuration - Copy to ~/mediaserver/config/ddns/config.json",
+  "_documentation": "https://github.com/qdm12/ddns-updater",
+  "_instructions": [
+    "1. Copy this file to ~/mediaserver/config/ddns/config.json",
+    "2. Replace 'example.com' with your actual domain",
+    "3. Replace API key and secret with your Porkbun credentials",
+    "4. Add or remove entries as needed for your subdomains",
+    "5. Restart ddns-updater: docker compose restart ddns-updater"
+  ],
+  "settings": [
+    {
+      "_comment": "Apex domain (example.com)",
+      "provider": "porkbun",
+      "domain": "example.com",
+      "host": "@",
+      "api_key": "pk1_your_api_key_here",
+      "secret_api_key": "sk1_your_secret_key_here",
+      "ip_version": "ipv4",
+      "ipv6_suffix": ""
+    },
+    {
+      "_comment": "Sonarr subdomain",
+      "provider": "porkbun",
+      "domain": "example.com",
+      "host": "sonarr",
+      "api_key": "pk1_your_api_key_here",
+      "secret_api_key": "sk1_your_secret_key_here",
+      "ip_version": "ipv4",
+      "ipv6_suffix": ""
+    },
+    {
+      "_comment": "Radarr subdomain",
+      "provider": "porkbun",
+      "domain": "example.com",
+      "host": "radarr",
+      "api_key": "pk1_your_api_key_here",
+      "secret_api_key": "sk1_your_secret_key_here",
+      "ip_version": "ipv4",
+      "ipv6_suffix": ""
+    }
+  ]
+}

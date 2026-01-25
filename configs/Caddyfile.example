@@ -1,0 +1,75 @@
+# Home Media Server - Caddy Reverse Proxy Configuration
+# =====================================================
+#
+# Copy this file to ~/mediaserver/Caddyfile and edit with your domain.
+#
+# Documentation: https://caddyserver.com/docs/caddyfile
+#
+# Caddy automatically:
+# - Obtains SSL certificates from Let's Encrypt
+# - Renews certificates before expiry
+# - Redirects HTTP to HTTPS
+# - Handles HTTPS termination
+
+# Global options
+{
+    # Email for Let's Encrypt notifications (expiry warnings)
+    # Replace with your actual email
+    email your-email@example.com
+}
+
+# Main domain - Jellyseerr
+# This is where users will request content
+# Replace 'example.com' with your actual domain
+example.com {
+    reverse_proxy jellyseerr:5055
+}
+
+# Sonarr - TV show management
+# Access at sonarr.example.com
+sonarr.example.com {
+    reverse_proxy sonarr:8989
+}
+
+# Radarr - Movie management
+# Access at radarr.example.com
+radarr.example.com {
+    reverse_proxy radarr:7878
+}
+
+# ============================================
+# OPTIONAL SERVICES - Uncomment to enable
+# ============================================
+
+# Prowlarr - Indexer management
+# Only expose if you need external access
+# prowlarr.example.com {
+#     reverse_proxy prowlarr:9696
+# }
+
+# Bazarr - Subtitle management
+# Usually not needed externally
+# bazarr.example.com {
+#     reverse_proxy bazarr:6767
+# }
+
+# ============================================
+# ADVANCED OPTIONS
+# ============================================
+
+# Example: Add basic authentication to a service
+# admin.example.com {
+#     basicauth {
+#         # Generate password hash: docker exec caddy caddy hash-password
+#         admin $2a$14$hashhere
+#     }
+#     reverse_proxy prowlarr:9696
+# }
+
+# Example: Custom error handling
+# example.com {
+#     handle_errors {
+#         respond "{http.error.status_code} {http.error.status_text}"
+#     }
+#     reverse_proxy jellyseerr:5055
+# }

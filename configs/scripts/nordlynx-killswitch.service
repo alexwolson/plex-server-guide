@@ -1,0 +1,29 @@
+# Nordlynx Kill-Switch Systemd Service
+# =====================================
+#
+# Copy to /etc/systemd/system/nordlynx-killswitch.service
+#
+# IMPORTANT: Update the ExecStart path to match your username!
+#
+# After copying:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now nordlynx-killswitch.timer
+
+[Unit]
+Description=Apply strict nordlynx VPN kill-switch rules
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+
+# Wait for WireGuard to establish connection (up to 60 seconds)
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 30); do /usr/bin/docker exec nordlynx wg show 2>/dev/null | grep -q "endpoint:" && exit 0; sleep 2; done; exit 1'
+
+# Run the kill-switch script
+# IMPORTANT: Change 'your-username' to your actual username
+ExecStart=/home/your-username/mediaserver/scripts/nordlynx-killswitch.sh
+
+# Restart on failure
+Restart=on-failure
+RestartSec=5

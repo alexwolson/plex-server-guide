@@ -1,0 +1,167 @@
+# Home Media Server - Docker Compose Configuration
+# ================================================
+# This file defines all containerized services for the media server.
+#
+# Usage:
+#   1. Copy example.env to .env and fill in your values
+#   2. Run: docker compose up -d
+#
+# Documentation: See guide/07-docker-compose-stack.md
+
+services:
+  # ===================
+  # VPN + Download Client
+  # ===================
+  # Nordlynx provides a WireGuard VPN tunnel using NordVPN.
+  # qBittorrent shares this container's network, ensuring all
+  # torrent traffic goes through the VPN.
+  nordlynx:
+    image: ghcr.io/bubuntux/nordlynx
+    container_name: nordlynx
+    cap_add:
+      - NET_ADMIN       # Required for VPN networking
+      - SYS_MODULE      # Required for WireGuard
+    environment:
+      - PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - QUERY=filters\[servers_groups\]\[identifier\]=legacy_p2p
+      - NET_LOCAL=192.168.0.0/16
+      - TZ=${TZ}
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.conf.all.rp_filter=2
+      - net.ipv6.conf.all.disable_ipv6=1
+    ports:
+      # qBittorrent WebUI - localhost only for security
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+  # qBittorrent - Torrent client
+  # Uses nordlynx's network stack (all traffic through VPN)
+  qbittorrent:
+    image: linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "service:nordlynx"
+    depends_on:
+      - nordlynx
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ${CONFIG_PATH}/qbittorrent:/config
+      - ${DOWNLOADS_PATH}:/downloads
+    restart: unless-stopped
+
+  # ===================
+  # *arr Stack
+  # ===================
+  # Sonarr - TV show automation
+  # Monitors for new episodes and sends download requests to qBittorrent
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/sonarr:/config
+      - ${MEDIA_PATH}/tv:/tv
+      - ${DOWNLOADS_PATH}:/downloads
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+
+  # Radarr - Movie automation
+  # Monitors for movies and sends download requests to qBittorrent
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/radarr:/config
+      - ${MEDIA_PATH}/movies:/movies
+      - ${DOWNLOADS_PATH}:/downloads
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  # Prowlarr - Indexer management
+  # Centralizes indexer configuration and syncs to Sonarr/Radarr
+  prowlarr:
+    image: linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/prowlarr:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+
+  # Bazarr - Automatic subtitles (Optional)
+  # Downloads subtitles for your media library
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/bazarr:/config
+      - ${MEDIA_PATH}/movies:/movies
+      - ${MEDIA_PATH}/tv:/tv
+    ports:
+      - "6767:6767"
+    restart: unless-stopped
+
+  # Jellyseerr - Request management (Optional)
+  # User-friendly interface for requesting content
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/jellyseerr:/app/config
+    ports:
+      - "5055:5055"
+    restart: unless-stopped
+
+  # ===================
+  # Infrastructure
+  # ===================
+  # Caddy - Reverse proxy with automatic SSL
+  # Routes external traffic to internal services with HTTPS
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Mount your Caddyfile (create this file - see Caddyfile.example)
+      - ${CONFIG_PATH}/../Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${CONFIG_PATH}/../caddy/data:/data
+      - ${CONFIG_PATH}/../caddy/config:/config
+
+  # DDNS Updater - Dynamic DNS updates
+  # Keeps your domain pointing to your dynamic IP
+  ddns-updater:
+    image: qmcgaw/ddns-updater:latest
+    container_name: ddns-updater
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/ddns:/updater/data
