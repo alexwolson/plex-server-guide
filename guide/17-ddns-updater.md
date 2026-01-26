@@ -6,7 +6,7 @@ Most home internet connections have dynamic IP addresses that change periodicall
 
 ## Overview
 
-ddns-updater will:
+[ddns-updater](https://github.com/qdm12/ddns-updater) will:
 - Monitor your public IP address
 - Update Porkbun DNS records when it changes
 - Run continuously in the background

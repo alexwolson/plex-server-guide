@@ -1,6 +1,6 @@
 # Chapter 8: Configure qBittorrent
 
-qBittorrent is your torrent download client. It receives download requests from Sonarr and Radarr and handles the actual downloading.
+[qBittorrent](https://github.com/qbittorrent/qBittorrent) is your torrent download client. It receives download requests from Sonarr and Radarr and handles the actual downloading.
 
 ## Overview
 
@@ -109,27 +109,32 @@ This is critical - always verify your downloads go through the VPN.
 On your server:
 ```bash
 # Get VPN IP
-docker exec nordlynx curl -s https://ifconfig.io
+docker exec nordlynx curl -s https://ipv4.icanhazip.com
 ```
 
 This should show a NordVPN IP address.
 
 ```bash
 # Get your real IP (for comparison)
-curl -s https://ifconfig.io
+curl -s https://ipv4.icanhazip.com
 ```
 
 These two IPs should be different.
+
+> **Note:** We use `ipv4.icanhazip.com` to force an IPv4 response. Some services return IPv6 addresses, which can look unfamiliar (long strings with colons).
 
 ### Method 3: Download an IP Check Torrent
 
 1. Go to [ipleak.net](https://ipleak.net)
 2. Click **Torrent Address detection**
-3. Download the magnet link
-4. Add it to qBittorrent (using the webUI)
-5. The website will show what IP is connecting
+3. Right-click the magnet link and copy it
+4. In qBittorrent's web UI, click the **link icon** (Add Torrent Link) in the toolbar
+5. Paste the magnet link and click **Download**
+6. Back on ipleak.net, the page will show what IP is connecting to the torrent
 
 This should show a VPN IP, not your home IP.
+
+> **Note:** Clicking the magnet link directly won't work—qBittorrent runs in a Docker container and isn't registered as a magnet handler on your system. You need to copy and paste the link manually.
 
 ## Additional Settings
 

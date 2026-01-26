@@ -2,7 +2,7 @@
 
 > **This chapter is optional.** Caddy provides pretty URLs with HTTPS (`https://media.example.com`) for accessing services externally. If you only need Plex remote access, skip to [Chapter 18: Plex Remote Access](18-plex-remote-access.md) - Plex has built-in remote streaming that works without a domain or reverse proxy.
 
-Caddy is a web server that automatically handles HTTPS certificates. It acts as a reverse proxy, routing requests from your domain to the appropriate internal services.
+[Caddy](https://github.com/caddyserver/caddy) is a web server that automatically handles HTTPS certificates. It acts as a reverse proxy, routing requests from your domain to the appropriate internal services.
 
 ## Why Use Caddy?
 

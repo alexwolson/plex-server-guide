@@ -49,11 +49,10 @@ The guide is organized into four parts:
 - `17-ddns-updater.md` - Dynamic DNS updates
 - `18-plex-remote-access.md` - Enable Plex remote streaming
 
-**Part 4: Security and Extras (Chapters 19-22)**
+**Part 4: Security and Extras (Chapters 19-21)**
 - `19-vpn-killswitch.md` - Host-level VPN enforcement (optional)
-- `20-get-iplayer.md` - BBC iPlayer downloads (optional)
-- `21-verification-checklist.md` - Complete system verification
-- `22-maintenance.md` - Updates, backups, and troubleshooting
+- `20-verification-checklist.md` - Complete system verification
+- `21-maintenance.md` - Updates, backups, and troubleshooting
 
 ### Appendices (`appendices/`)
 
@@ -353,15 +352,7 @@ After each major component installation:
 - **Verification:** VPN kill-switch prevents leaks
 - **Note:** Optional additional security layer
 
-#### Chapter 20: get-iplayer (Optional)
-- **Action:** Install BBC iPlayer download tool
-- **Prerequisites:** Core services running
-- **User Decision:** Ask if user wants BBC iPlayer downloads
-- **Steps:** Install get-iplayer and configure
-- **Verification:** User confirms downloads work
-- **Note:** UK-specific optional feature
-
-#### Chapter 21: Verification Checklist
+#### Chapter 20: Verification Checklist
 - **Action:** Run comprehensive system verification
 - **Prerequisites:** All services installed and configured
 - **Steps:**
@@ -374,7 +365,7 @@ After each major component installation:
 - **Verification:** Complete checklist from guide chapter
 - **Output:** Provide verification report to user
 
-#### Chapter 22: Maintenance
+#### Chapter 21: Maintenance
 - **Action:** Set up maintenance procedures
 - **Prerequisites:** System fully configured
 - **Steps:**

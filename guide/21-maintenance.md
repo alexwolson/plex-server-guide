@@ -1,4 +1,4 @@
-# Chapter 22: Maintenance
+# Chapter 21: Maintenance
 
 Your media server is running. This chapter covers ongoing maintenance to keep it healthy.
 
@@ -438,6 +438,6 @@ Enjoy your media server!
 
 ---
 
-**Previous:** [Chapter 21: Verification Checklist](21-verification-checklist.md)
+**Previous:** [Chapter 20: Verification Checklist](20-verification-checklist.md)
 
 **Back to:** [README](../README.md)

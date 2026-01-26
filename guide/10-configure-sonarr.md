@@ -1,6 +1,6 @@
 # Chapter 10: Configure Sonarr
 
-Sonarr automates TV show downloads. Once configured, it monitors for new episodes of shows you're tracking and automatically downloads them.
+[Sonarr](https://github.com/Sonarr/Sonarr) automates TV show downloads. Once configured, it monitors for new episodes of shows you're tracking and automatically downloads them.
 
 ## Overview
 
@@ -113,22 +113,42 @@ Check that Prowlarr has synced indexers:
 
 ## Configure Quality Profiles
 
-Quality profiles determine what video quality Sonarr downloads.
-
-1. Go to **Settings** > **Profiles**
-2. Edit the **HD-1080p** profile (or create a new one)
-3. Recommended settings for most users:
-   - Enable: WEBDL-1080p, WEBRip-1080p, Bluray-1080p
-   - Cutoff: WEBDL-1080p (stops upgrading after this quality)
+Quality profiles determine what video quality Sonarr downloads. Go to **Settings** > **Profiles** to view and edit them.
 
 ### Understanding Quality Levels
 
-| Quality | Size per Episode | Notes |
-|---------|-----------------|-------|
-| HDTV-720p | 500MB-1GB | Good enough for most viewing |
-| WEBDL-1080p | 1-3GB | High quality streaming rips |
-| Bluray-1080p | 3-6GB | Best quality, larger files |
-| WEBDL-2160p | 5-15GB | 4K, requires compatible setup |
+The quality you choose is a trade-off between file size and visual quality. Here's what the different levels mean:
+
+| Quality | Size per Episode | What It Is |
+|---------|-----------------|------------|
+| HDTV-720p | 500MB–1GB | Recorded from TV broadcast. Decent quality, smallest files. |
+| WEBDL-720p/1080p | 1–3GB | Ripped from streaming services (Netflix, etc). Clean, no encoding artifacts. |
+| WEBRip-720p/1080p | 1–3GB | Screen-captured from streaming. Slightly lower quality than WEBDL. |
+| Bluray-720p/1080p | 2–6GB | Re-encoded from Blu-ray disc. High quality but larger than web sources. |
+| Remux-1080p | 15–30GB | Full Blu-ray quality, no re-encoding. Very large files. |
+| WEBDL-2160p | 5–15GB | 4K from streaming services. Great quality-to-size ratio for 4K. |
+| Bluray-2160p | 15–40GB | Re-encoded 4K from UHD Blu-ray. |
+| Remux-2160p | 40–80GB | Full UHD Blu-ray quality. Massive files. |
+
+### Choosing Your Profile
+
+There's no single "right" answer—it depends on your storage, bandwidth, and how you watch:
+
+- **Storage limited?** Stick to 720p or 1080p WEBDL. These offer good quality at reasonable sizes.
+- **Have plenty of storage?** Consider 4K (2160p) for shows that benefit from it—nature documentaries, prestige dramas with cinematic visuals, etc.
+- **Watch on phones/tablets mostly?** 1080p is usually indistinguishable from 4K on small screens.
+- **Have a 4K TV and good home network?** 4K WEBDL is a sweet spot—noticeably better than 1080p without the massive file sizes of remuxes.
+
+### Setting Up a Profile
+
+1. Go to **Settings** > **Profiles**
+2. Edit an existing profile or create a new one
+3. Check the qualities you want Sonarr to download
+4. Drag to set priority (higher = preferred when multiple are available)
+5. Set **Cutoff** to the quality where Sonarr should stop upgrading (e.g., if set to Bluray-1080p, Sonarr won't replace a Bluray-1080p with a Remux)
+6. Save
+
+You can create multiple profiles for different use cases—perhaps a "4K" profile for cinematic shows and an "HD" profile for sitcoms where 4K doesn't matter.
 
 ## Add Your First TV Show
 
@@ -139,12 +159,12 @@ Quality profiles determine what video quality Sonarr downloads.
 3. Select the correct show from results
 4. Configure:
 
-| Setting | Recommendation |
-|---------|---------------|
+| Setting | Notes |
+|---------|-------|
 | Root Folder | `/tv` |
-| Monitor | All Episodes (or First Season) |
-| Quality Profile | HD-1080p |
-| Series Type | Standard |
+| Monitor | All Episodes (or First Season, if you want to test first) |
+| Quality Profile | Whichever profile matches your preferences |
+| Series Type | Standard (or Anime for anime series) |
 | Season Folder | Yes |
 
 5. Click **Add**
@@ -188,7 +208,7 @@ After adding a show, click the **Search All** button (magnifying glass icon) to 
 2. Verify category exists in qBittorrent
 3. Check VPN is still connected:
    ```bash
-   docker exec nordlynx curl -s https://ifconfig.io
+   docker exec nordlynx curl -s https://ipv4.icanhazip.com
    ```
 
 ### Downloads Complete But Not Importing

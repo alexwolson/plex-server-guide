@@ -1,8 +1,81 @@
 # Chapter 12: Configure Bazarr (Optional)
 
-Bazarr automatically downloads subtitles for your movies and TV shows. If you watch content in other languages or prefer having subtitles available, this service is for you.
+[Bazarr](https://github.com/morpheus65535/bazarr) automatically downloads subtitles for your movies and TV shows. If you watch content in other languages or prefer having subtitles available, this service is for you.
 
 > **This chapter is optional.** If you don't need subtitles, skip to [Chapter 13](13-configure-jellyseerr.md) or [Chapter 14](14-domain-and-dns.md).
+
+## Understanding Subtitle Types
+
+Before configuring Bazarr, it helps to understand the different types of subtitles you'll encounter:
+
+### Regular Subtitles
+
+Standard subtitles that display dialogue only. These assume you can hear the audio and just need the dialogue translated or transcribed. They don't include sound descriptions—no *[door creaks]* or *[tense music]*—just what characters say.
+
+Regular subtitles are typically **verbatim** (word-for-word what's spoken) when in the original language, but may be **paraphrased** when translated to fit reading speed or cultural context.
+
+### SDH (Subtitles for the Deaf and Hard of Hearing)
+
+SDH subtitles include dialogue plus non-speech audio information:
+- Sound effects: *[door creaks]*, *[phone ringing]*
+- Music: *[tense orchestral music]*, *[upbeat pop song playing]*
+- Speaker identification: *JOHN: Hello* or *(whispering)*
+- Off-screen sounds: *[footsteps approaching]*, *[dog barking in distance]*
+
+SDH subtitles are **verbatim**—they transcribe exactly what's said, including filler words, stuttering, and overlapping dialogue. They're designed for viewers who can't hear the audio at all.
+
+SDH subtitles are useful if you're watching with the sound off, in a noisy environment, or have hearing difficulties.
+
+### CC (Closed Captions)
+
+Technically, CC refers to subtitles embedded in a broadcast signal (the "closed" means they can be turned on/off). In practice, CC and SDH are often used interchangeably—both include sound descriptions and are verbatim transcriptions. When Bazarr or subtitle sites say "CC," they usually mean SDH-style subtitles.
+
+### Verbatim vs Paraphrased: Quick Summary
+
+| Type | Dialogue | Sound descriptions | Verbatim? |
+|------|----------|-------------------|-----------|
+| Regular (same language) | Yes | No | Usually yes |
+| Regular (translated) | Yes | No | Often paraphrased |
+| SDH / CC | Yes | Yes | Yes |
+| Forced | Foreign dialogue only | No | Usually yes |
+
+### Forced Subtitles
+
+Forced subtitles only appear when necessary—typically for:
+- Foreign language dialogue in an otherwise English film (e.g., when characters speak Elvish in Lord of the Rings)
+- On-screen text that needs translation (signs, letters, etc.)
+
+These are meant to be shown *in addition to* the main audio, not as a replacement for it. In Bazarr, you'll usually want to **exclude** forced subtitles unless you specifically want only these minimal translations.
+
+### HI (Hearing Impaired)
+
+HI is essentially another term for SDH—subtitles that include sound descriptions. In Bazarr settings, you can choose to:
+- **Include**: Prefer subtitles with sound descriptions
+- **Exclude**: Prefer dialogue-only subtitles
+- **Only**: Only download HI/SDH subtitles
+
+### Which Should You Choose?
+
+- **Watching in your native language, just want backup subtitles**: Regular (non-HI) subtitles
+- **Often watch with sound off or low**: SDH/HI subtitles
+- **Only want translations for foreign dialogue**: Forced subtitles
+- **Hearing difficulties**: SDH/HI subtitles
+
+## Do You Need Bazarr?
+
+Before setting up Bazarr, consider whether you actually need it:
+
+**Many downloads already include subtitles.** Torrent releases—especially from quality release groups—often come with subtitle files (`.srt`) included, or have subtitles embedded directly in the video file (particularly common with MKV containers). You may find that most of your library already has subtitles without any extra effort.
+
+**Plex can find subtitles on demand.** When watching something in Plex, you can click the subtitle icon and select "Search" to find subtitles from OpenSubtitles. This is manual (you do it per video), but it works well for occasional use. You don't need a separate service if you only occasionally need subtitles.
+
+**Bazarr is useful when:**
+- You want subtitles automatically downloaded for everything
+- You watch a lot of non-English content
+- You prefer a specific subtitle source or style
+- You want subtitles ready before you start watching
+
+If you only need subtitles occasionally, you can skip Bazarr and use Plex's built-in search instead.
 
 ## Overview
 

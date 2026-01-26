@@ -1,6 +1,6 @@
 # Chapter 11: Configure Radarr
 
-Radarr automates movie downloads. It works similarly to Sonarr but for movies instead of TV shows.
+[Radarr](https://github.com/Radarr/Radarr) automates movie downloads. It works similarly to Sonarr but for movies instead of TV shows.
 
 ## Overview
 
@@ -101,32 +101,43 @@ Log in with your new credentials.
 
 ## Configure Quality Profiles
 
-1. Go to **Settings** > **Profiles**
-2. Edit or create a profile
-
-### Recommended HD Profile
-
-For most users targeting 1080p:
-
-1. Edit **HD-1080p** profile
-2. Enable these qualities:
-   - WEBDL-1080p
-   - WEBRip-1080p
-   - Bluray-1080p
-   - Remux-1080p (if you have storage)
-3. Set **Cutoff**: Bluray-1080p
-4. Save
+Quality profiles determine what video quality Radarr downloads. Go to **Settings** > **Profiles** to view and edit them.
 
 ### Understanding Movie Quality
 
-| Quality | Size | Notes |
-|---------|------|-------|
-| WEBDL-1080p | 3-8 GB | High quality streaming rips |
-| Bluray-1080p | 5-15 GB | Encoded from Blu-ray |
-| Remux-1080p | 20-40 GB | Full Blu-ray quality, large |
-| WEBDL-2160p | 10-25 GB | 4K streaming |
-| Bluray-2160p | 20-50 GB | 4K encoded |
-| Remux-2160p | 50-80 GB | Full 4K Blu-ray |
+The quality you choose is a trade-off between file size and visual fidelity. Movies generally benefit more from higher quality than TV shows—a sweeping landscape shot in a film is more noticeable at 4K than a sitcom filmed on a studio set.
+
+| Quality | Size | What It Is |
+|---------|------|------------|
+| WEBDL-1080p | 3–8 GB | Ripped from streaming services. Clean quality, reasonable size. |
+| WEBRip-1080p | 3–8 GB | Screen-captured from streaming. Slightly lower quality than WEBDL. |
+| Bluray-1080p | 5–15 GB | Re-encoded from Blu-ray disc. Often better than streaming for live-action. |
+| Remux-1080p | 20–40 GB | Full Blu-ray, no re-encoding. Reference quality but large files. |
+| WEBDL-2160p | 10–25 GB | 4K from streaming. Excellent quality-to-size ratio for 4K content. |
+| Bluray-2160p | 20–50 GB | Re-encoded from UHD Blu-ray. High quality 4K. |
+| Remux-2160p | 50–80 GB | Full UHD Blu-ray quality. The best available, but massive files. |
+
+### Choosing Your Profile
+
+There's no universal "best" setting—it depends on your priorities:
+
+- **Storage is limited?** 1080p WEBDL or Bluray offers excellent quality at manageable sizes.
+- **Have plenty of storage?** 4K (2160p) is increasingly available and looks noticeably better on modern displays. WEBDL-2160p gives you 4K quality without the huge file sizes of Blu-ray encodes.
+- **Collecting films you'll rewatch?** Consider Bluray or Remux quality for your favorites.
+- **Just want something watchable?** 1080p WEBDL is perfectly good for casual viewing.
+
+For visually impressive films (sci-fi epics, nature documentaries, animated features), the jump to 4K is often worth it. For dialogue-heavy dramas, 1080p is usually sufficient.
+
+### Setting Up a Profile
+
+1. Go to **Settings** > **Profiles**
+2. Edit an existing profile or create a new one
+3. Check the qualities you want Radarr to accept
+4. Drag to set priority (higher = preferred when multiple are available)
+5. Set **Cutoff** to the quality where Radarr stops upgrading
+6. Save
+
+You might create multiple profiles—"4K" for films where visuals matter, and "HD" for everything else.
 
 ## Add Your First Movie
 
@@ -137,12 +148,12 @@ For most users targeting 1080p:
 3. Select the correct movie from results
 4. Configure:
 
-| Setting | Recommendation |
-|---------|---------------|
+| Setting | Notes |
+|---------|-------|
 | Root Folder | `/movies` |
 | Monitor | Movie |
-| Minimum Availability | Released |
-| Quality Profile | HD-1080p |
+| Minimum Availability | Released (avoids low-quality cam recordings) |
+| Quality Profile | Whichever profile matches your preferences |
 
 5. Click **Add Movie** (or **Add Movie + Search** to search immediately)
 

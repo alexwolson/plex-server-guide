@@ -51,16 +51,16 @@ We'll start these services:
 The Docker Compose file below includes all available services, but **you only need to include the ones you want to use**. Here's what each service does:
 
 **Core services** (recommended):
-- **nordlynx + qbittorrent**: VPN-protected downloads (required for torrenting)
-- **sonarr**: TV show automation
-- **radarr**: Movie automation
-- **prowlarr**: Manages your indexers and syncs them to Sonarr/Radarr
+- **[nordlynx](https://github.com/bubuntux/nordlynx) + [qbittorrent](https://github.com/qbittorrent/qBittorrent)**: VPN-protected downloads (required for torrenting)
+- **[sonarr](https://github.com/Sonarr/Sonarr)**: TV show automation
+- **[radarr](https://github.com/Radarr/Radarr)**: Movie automation
+- **[prowlarr](https://github.com/Prowlarr/Prowlarr)**: Manages your indexers and syncs them to Sonarr/Radarr
 
 **Optional services**:
-- **bazarr**: Automatic subtitle downloads—skip if you don't need subtitles
-- **jellyseerr**: Lets others request content—skip if you're the only user
-- **caddy**: Reverse proxy for HTTPS access—only needed if you want domain-based URLs (see [Part 3](14-domain-and-dns.md))
-- **ddns-updater**: Keeps your domain pointed at your IP—only needed with Caddy and a dynamic IP
+- **[bazarr](https://github.com/morpheus65535/bazarr)**: Automatic subtitle downloads—skip if you don't need subtitles
+- **[jellyseerr](https://github.com/seerr-team/seerr)**: Lets others request content—skip if you're the only user
+- **[caddy](https://github.com/caddyserver/caddy)**: Reverse proxy for HTTPS access—only needed if you want domain-based URLs (see [Part 3](14-domain-and-dns.md))
+- **[ddns-updater](https://github.com/qdm12/ddns-updater)**: Keeps your domain pointed at your IP—only needed with Caddy and a dynamic IP
 
 **To remove a service you don't need:** Simply delete that service's entire block from `docker-compose.yml` before running `docker compose up`. For example, if you don't want Bazarr, delete everything from `bazarr:` down to (but not including) the next service definition.
 
@@ -322,17 +322,19 @@ jellyseerr    fallenbagel/jellyseerr:latest     Up
 Check that qBittorrent is using the VPN:
 
 ```bash
-docker exec nordlynx curl -s https://ifconfig.io
+docker exec nordlynx curl -s https://ipv4.icanhazip.com
 ```
 
 This should show a NordVPN IP address, **not** your home IP.
 
 Compare with your actual public IP:
 ```bash
-curl -s https://ifconfig.io
+curl -s https://ipv4.icanhazip.com
 ```
 
 These two IPs should be different.
+
+> **Note:** We use `ipv4.icanhazip.com` to force an IPv4 response. Some IP lookup services return IPv6 addresses, which look like long strings with colons (e.g., `2001:db8::1`) and can be confusing when comparing.
 
 ## Step 8: Access the Web Interfaces
 

@@ -12,7 +12,7 @@
 ## Overview
 
 We'll:
-- Purchase a domain name (we recommend Porkbun)
+- Purchase a domain name
 - Create DNS records pointing to your IP
 - Get API credentials for automatic DNS updates
 
@@ -39,60 +39,36 @@ Save this IP - you'll use it when creating DNS records.
 
 > **Note:** If you have a dynamic IP (most residential connections do), this IP may change. We'll set up automatic updates in [Chapter 17](17-ddns-updater.md).
 
-## Step 2: Choose a Domain Name
+## Step 2: Choose and Purchase a Domain
 
-### Domain Name Tips
+You'll need to pick a domain name and TLD (the part after the dot, like `.com` or `.stream`). There are hundreds of TLDs available at varying prices.
 
-- **Keep it short** - easier to type
-- **Make it memorable** - you'll share it with users
-- **Consider purpose** - media, requests, home, etc.
+**Finding available domains:** Namecheap has a useful search tool that lets you check multiple domain name ideas across hundreds of TLDs at once. Enter several potential names and see what's available and at what price:
 
-### Popular TLDs for Media Servers
+[Namecheap Beast Mode Search](https://www.namecheap.com/domains/registration/results/?type=beast&domain=)
 
-| TLD | Price | Notes |
-|-----|-------|-------|
-| `.stream` | ~$25/year | Perfect for media servers |
-| `.media` | ~$30/year | Self-explanatory |
-| `.tv` | ~$30/year | Great for TV-focused |
-| `.com` | ~$10/year | Classic, may be taken |
-| `.io` | ~$30/year | Tech-friendly |
+This helps you quickly compare options—you might find that `myserver.stream` is $25/year while `myserver.xyz` is $3/year.
 
-### Example Names
+### Choosing a Registrar
 
-- `mymediaserver.stream`
-- `familyflix.media`
-- `hometheater.tv`
-- `smithfamily.stream`
+There are many domain registrars to choose from. This guide uses **Porkbun** for the examples—it's what I use and I haven't had any issues. It has free WHOIS privacy, reasonable pricing, and a good API for DDNS. But **Namecheap**, **Cloudflare Registrar**, and others work just as well.
 
-## Step 3: Purchase Domain (Porkbun)
+The main things to look for:
+- **WHOIS privacy** - Hides your personal info from public domain records (many registrars include this free)
+- **API access** - Needed for automatic DNS updates if you have a dynamic IP (see [Chapter 17](17-ddns-updater.md))
+- **No aggressive upselling** - Some registrars push add-ons at every step
 
-We recommend Porkbun for:
-- Competitive pricing
-- Free WHOIS privacy
-- Good API for DDNS
-- Clean interface
+The DDNS configuration in [Chapter 17](17-ddns-updater.md) shows Porkbun's setup, but can be adapted for other registrars.
 
-### Create Account
+## Step 3: Purchase Your Domain
 
-1. Go to [porkbun.com](https://porkbun.com)
-2. Create an account
-3. Verify your email
+The process is similar across registrars. Using Porkbun as an example:
 
-### Search and Purchase
-
-1. Search for your chosen domain
-2. Add to cart
-3. Check out
-4. Enable **Auto-Renew** to avoid losing the domain
-
-### Alternative Registrars
-
-If you prefer another registrar:
-- **Cloudflare** - At-cost pricing, good DNS
-- **Namecheap** - Budget-friendly
-- **Google Domains** (now Squarespace)
-
-The DDNS configuration will vary by provider.
+1. Go to [porkbun.com](https://porkbun.com) (or your chosen registrar)
+2. Create an account and verify your email
+3. Search for your chosen domain
+4. Add to cart and check out
+5. Enable **Auto-Renew** to avoid accidentally losing the domain
 
 ## Step 4: Create DNS Records
 

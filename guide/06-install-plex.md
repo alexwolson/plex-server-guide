@@ -1,6 +1,6 @@
 # Chapter 6: Install Plex Media Server
 
-Plex is your media server - it organizes your library and streams content to devices anywhere in the world.
+[Plex](https://www.plex.tv/) is your media server - it organizes your library and streams content to devices anywhere in the world.
 
 ## Overview
 
@@ -118,7 +118,15 @@ You can always add more libraries later from **Settings > Libraries**.
 
 ## Hardware Transcoding
 
-Hardware transcoding uses your Intel CPU's Quick Sync to convert video formats efficiently. This requires a [Plex Pass](../appendices/F-plex-pass-features.md) subscription.
+Transcoding converts video from one format to another on-the-fly. When a device can't play the original format (e.g., a browser that doesn't support HEVC), Plex converts it to something compatible.
+
+**Do you actually need transcoding?**
+
+Strictly speaking, no. You can disable transcoding entirely in Plex settings, and it will simply refuse to play content when the format isn't compatible with the requesting device. However, most people want a "play anything, anywhere" experience—streaming to phones, tablets, browsers, and smart TVs without worrying about codec compatibility. You may also want to adjust streaming quality on the fly (useful when bandwidth is limited). Both of these really benefit from hardware transcoding.
+
+Hardware transcoding uses your Intel CPU's Quick Sync Video (QSV) to convert video formats efficiently, offloading the work from your main CPU cores. Without hardware acceleration, transcoding is CPU-intensive and a modest server might only handle one or two simultaneous transcodes. With QSV, the same server can handle many more.
+
+Hardware transcoding requires a [Plex Pass](../appendices/F-plex-pass-features.md) subscription.
 
 ### Verify Intel QSV is Available
 

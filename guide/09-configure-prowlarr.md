@@ -1,6 +1,53 @@
 # Chapter 9: Configure Prowlarr
 
-Prowlarr is an indexer manager that centralizes your indexer configuration. Instead of adding indexers to each *arr app separately, you configure them once in Prowlarr and sync to all apps.
+[Prowlarr](https://github.com/Prowlarr/Prowlarr) is an indexer manager that centralizes your indexer configuration. Instead of adding indexers to each *arr app separately, you configure them once in Prowlarr and sync to all apps.
+
+## What is an Indexer?
+
+When Sonarr wants to download a TV episode or Radarr wants a movie, they need to search for it somewhere. That "somewhere" is an **indexer**.
+
+An indexer is essentially a search engine for torrent files (or Usenet posts). When you search for "Breaking Bad S01E01", the indexer searches its database and returns a list of available downloads—different quality levels, different release groups, different file sizes. Sonarr or Radarr then picks the best match based on your quality preferences and sends it to your download client.
+
+**Why can't Sonarr/Radarr just search the internet directly?** Each indexer has its own API, authentication method, and quirks. Rather than building support for hundreds of indexers into Sonarr and Radarr directly, the *arr apps use a standardized format (Torznab for torrents, Newznab for Usenet). Prowlarr handles the translation between each indexer's specific API and this standard format.
+
+There are two main types of indexers:
+
+- **Public indexers**: Open to everyone, no account needed. Generally lower quality results and less reliable.
+- **Private trackers**: Require an invitation or application to join. Better quality, more reliable, but harder to access.
+
+For more details on finding and choosing indexers, see [Appendix B: Indexer Guide](../appendices/B-indexer-tracker-guide.md).
+
+## What Does Prowlarr Do?
+
+Prowlarr sits between your indexers and your *arr apps. It:
+
+1. **Connects to indexers** using each site's specific API
+2. **Translates** responses into the standard Torznab/Newznab format
+3. **Syncs** indexer configurations to Sonarr, Radarr, and other connected apps
+4. **Monitors** indexer health and alerts you to problems
+
+Without Prowlarr (or a similar tool), you'd need to manually configure each indexer in each app. With three indexers and two apps (Sonarr + Radarr), that's six configurations to maintain. Add Lidarr for music and you're up to nine. Prowlarr reduces this to three—one per indexer—with automatic sync to all apps.
+
+## Why Prowlarr Instead of Jackett?
+
+If you've researched media server setups before, you may have encountered **Jackett**, an older tool that serves a similar purpose. Both Prowlarr and Jackett act as intermediaries between your *arr apps and indexers, but they work differently.
+
+**Jackett** was the original solution. It translates indexer-specific APIs into a standard format (Torznab/Newznab) that Sonarr and Radarr understand. You add indexers to Jackett, then add Jackett as a single indexer source in each *arr app. While functional, this approach has drawbacks:
+
+- **Manual configuration in each app**: You must add each Jackett indexer URL to Sonarr, Radarr, and any other app separately
+- **No native integration**: Jackett doesn't know about *arr apps—it just provides a translation layer
+- **Sync limitations**: Changes in Jackett don't automatically propagate to your apps
+- **Separate development**: Jackett is maintained independently from the *arr ecosystem
+
+**Prowlarr** was built by the *arr developers specifically to solve these problems:
+
+- **One-time setup**: Add an indexer once in Prowlarr, and it automatically syncs to all connected apps
+- **Native *arr integration**: Prowlarr speaks the same language as Sonarr/Radarr—it was designed by the same team
+- **Automatic sync**: Add, remove, or modify indexers in Prowlarr, and changes push to all apps automatically
+- **Unified management**: See all your indexers and their health in one place
+- **Active development**: Maintained alongside Sonarr, Radarr, and Lidarr with coordinated updates
+
+**The bottom line**: Unless you have a specific reason to use Jackett (e.g., an indexer Prowlarr doesn't support yet), Prowlarr is the better choice for new setups. It's what this guide uses.
 
 ## Overview
 

@@ -8,13 +8,13 @@ A comprehensive, beginner-friendly guide for building a home media server with a
 
 This guide walks you through setting up a complete home media server with:
 
-- **Plex Media Server** - Stream your media library to any device
-- **Sonarr & Radarr** - Automatically download and organize TV shows and movies
-- **Prowlarr** - Centralized indexer management
-- **qBittorrent + NordVPN** - VPN-protected torrent downloads
-- **Caddy** - Secure HTTPS reverse proxy with automatic SSL certificates
-- **Jellyseerr** - Let friends and family request content (optional)
-- **Bazarr** - Automatic subtitle downloads (optional)
+- **[Plex Media Server](https://www.plex.tv/)** - Stream your media library to any device
+- **[Sonarr](https://github.com/Sonarr/Sonarr) & [Radarr](https://github.com/Radarr/Radarr)** - Automatically download and organize TV shows and movies
+- **[Prowlarr](https://github.com/Prowlarr/Prowlarr)** - Centralized indexer management
+- **[qBittorrent](https://github.com/qbittorrent/qBittorrent) + NordVPN** - VPN-protected torrent downloads
+- **[Caddy](https://github.com/caddyserver/caddy)** - Secure HTTPS reverse proxy with automatic SSL certificates
+- **[Jellyseerr](https://github.com/seerr-team/seerr)** - Let friends and family request content (optional)
+- **[Bazarr](https://github.com/morpheus65535/bazarr)** - Automatic subtitle downloads (optional)
 
 ## Architecture Overview
 
@@ -139,9 +139,8 @@ See [Hardware and Planning](guide/01-hardware-and-planning.md) for detailed requ
 | # | Chapter | Description |
 |---|---------|-------------|
 | 19 | [VPN Kill-Switch](guide/19-vpn-killswitch.md) | Host-level VPN enforcement *(optional)* |
-| 20 | [get-iplayer](guide/20-get-iplayer.md) | BBC iPlayer downloads *(optional)* |
-| 21 | [Verification Checklist](guide/21-verification-checklist.md) | Complete system verification |
-| 22 | [Maintenance](guide/22-maintenance.md) | Updates, backups, and troubleshooting |
+| 20 | [Verification Checklist](guide/20-verification-checklist.md) | Complete system verification |
+| 21 | [Maintenance](guide/21-maintenance.md) | Updates, backups, and troubleshooting |
 
 ## Appendices
 
@@ -153,6 +152,7 @@ See [Hardware and Planning](guide/01-hardware-and-planning.md) for detailed requ
 | [D: Service Ports](appendices/D-service-ports-reference.md) | Port reference table |
 | [E: File Paths](appendices/E-file-paths-reference.md) | Directory structure reference |
 | [F: Plex Pass Features](appendices/F-plex-pass-features.md) | Premium subscription features |
+| [G: Sharing with Others](appendices/G-sharing-with-others.md) | Considerations for sharing your server |
 
 ## Quick Reference
 

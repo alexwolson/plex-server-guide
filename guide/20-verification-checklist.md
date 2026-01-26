@@ -1,4 +1,4 @@
-# Chapter 21: Verification Checklist
+# Chapter 20: Verification Checklist
 
 Use this checklist to verify your entire media server setup is working correctly.
 
@@ -54,7 +54,7 @@ docker exec nordlynx wg show
 ### Verify VPN IP
 
 ```bash
-docker exec nordlynx curl -s https://ifconfig.io
+docker exec nordlynx curl -s https://ipv4.icanhazip.com
 ```
 
 **Expected:** Returns a NordVPN IP (not your home IP).
@@ -65,9 +65,9 @@ docker exec nordlynx curl -s https://ifconfig.io
 
 ```bash
 # Get VPN IP
-VPN_IP=$(docker exec nordlynx curl -s https://ifconfig.io)
+VPN_IP=$(docker exec nordlynx curl -s https://ipv4.icanhazip.com)
 # Get home IP
-HOME_IP=$(curl -s https://ifconfig.io)
+HOME_IP=$(curl -s https://ipv4.icanhazip.com)
 echo "VPN IP: $VPN_IP"
 echo "Home IP: $HOME_IP"
 ```
@@ -220,7 +220,7 @@ docker logs ddns-updater --tail 20
 
 ```bash
 dig +short your-domain.com
-curl -s https://ifconfig.io
+curl -s https://ipv4.icanhazip.com
 ```
 
 - [ ] DNS IP matches your public IP
@@ -300,7 +300,6 @@ ls -la ~/downloads/
 - [ ] Bazarr connected and downloading subtitles
 - [ ] Jellyseerr working for requests
 - [ ] Kill-switch rules active
-- [ ] get-iplayer working (if configured)
 
 ## Troubleshooting Failed Checks
 
@@ -324,6 +323,6 @@ Continue to the maintenance chapter for ongoing care of your server.
 
 ---
 
-**Previous:** [Chapter 20: get-iplayer (Optional)](20-get-iplayer.md)
+**Previous:** [Chapter 19: VPN Kill-Switch (Optional)](19-vpn-killswitch.md)
 
-**Next:** [Chapter 22: Maintenance](22-maintenance.md)
+**Next:** [Chapter 21: Maintenance](21-maintenance.md)

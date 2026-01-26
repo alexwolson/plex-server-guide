@@ -319,10 +319,10 @@ done
 
 ## Next Steps
 
-The VPN kill-switch provides extra protection for your downloads. Next is the optional get-iplayer chapter, or skip to the verification checklist.
+The VPN kill-switch provides extra protection for your downloads. Next, verify your entire setup with the verification checklist.
 
 ---
 
 **Previous:** [Chapter 18: Plex Remote Access](18-plex-remote-access.md)
 
-**Next:** [Chapter 20: get-iplayer (Optional)](20-get-iplayer.md)
+**Next:** [Chapter 20: Verification Checklist](20-verification-checklist.md)

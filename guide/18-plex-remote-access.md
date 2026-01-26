@@ -200,8 +200,7 @@ Plex remote access is configured. You can now stream from anywhere.
 
 Next are optional chapters:
 - [VPN Kill-Switch](19-vpn-killswitch.md) - Extra security for VPN
-- [get-iplayer](20-get-iplayer.md) - BBC content
-- [Verification Checklist](21-verification-checklist.md) - Confirm everything works
+- [Verification Checklist](20-verification-checklist.md) - Confirm everything works
 
 ---
 

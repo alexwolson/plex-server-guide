@@ -1,8 +1,10 @@
 # Chapter 13: Configure Jellyseerr (Optional)
 
-Jellyseerr provides a user-friendly interface for requesting movies and TV shows. Share it with friends and family so they can request content without accessing Sonarr/Radarr directly.
+[Jellyseerr](https://github.com/seerr-team/seerr) provides a user-friendly interface for requesting movies and TV shows. Share it with friends and family so they can request content without accessing Sonarr/Radarr directly.
 
 > **This chapter is optional.** If you don't need request management, skip to [Chapter 14](14-domain-and-dns.md).
+
+> **Note: Jellyseerr is merging with Overseerr.** Jellyseerr was originally a fork of Overseerr (which only supported Plex). The two projects are currently merging into a unified app called **Seerr**. As of this writing, Seerr is in beta. Once Seerr reaches stable release, parts of this chapter will need updating—the Docker image name, some configuration steps, and possibly the port may change. For now, Jellyseerr continues to work and receive updates. Check the [Seerr GitHub](https://github.com/seerr-team/seerr) for the latest status.
 
 ## Overview
 
@@ -104,16 +106,7 @@ You'll be redirected back to Jellyseerr as an administrator.
 Set what new users can do by default:
 
 1. Go to **Settings** > **Users**
-2. Under **Global User Permissions**, configure:
-
-| Permission | Recommended |
-|------------|-------------|
-| Request | Enabled |
-| Auto-Approve | Disabled (approve manually) |
-| Auto-Request Movies | Disabled |
-| Auto-Request TV | Disabled |
-| View Requests | Enabled |
-
+2. Under **Global User Permissions**, configure permissions based on your preferences (see [User Permissions Explained](#user-permissions-explained) below)
 3. Click **Save Changes**
 
 ### Request Limits (Optional)
@@ -157,22 +150,18 @@ Set up notifications for request approvals:
 
 ## User Permissions Explained
 
-| Permission | Description |
-|------------|-------------|
-| Request | Can make requests (basic permission) |
-| Auto-Approve | Requests are automatically approved |
-| Auto-Request Movies | Automatically requests unwatched movies |
-| Manage Requests | Can approve/deny others' requests |
-| Manage Users | Can modify other users |
-| Admin | Full access |
+| Permission | What It Does |
+|------------|--------------|
+| Request | User can submit requests for movies and TV shows. Without this, they can only browse. |
+| Auto-Approve | Requests are immediately sent to Sonarr/Radarr without manual approval. If disabled, an admin must approve each request. |
+| Auto-Request Movies | Automatically requests movies from the user's Plex watchlist. Use with caution—can generate many requests. |
+| Auto-Request TV | Same as above, but for TV shows. |
+| View Requests | User can see other users' requests (not just their own). |
+| Manage Requests | User can approve or deny requests made by others. |
+| Manage Users | User can edit other users' permissions and settings. |
+| Admin | Full access to all settings and features. |
 
-### Recommended User Roles
-
-| User Type | Permissions |
-|-----------|-------------|
-| Friends/Family | Request only |
-| Trusted Users | Request + Auto-Approve |
-| Co-Admins | Manage Requests |
+How you configure these depends on your situation. If you trust your users not to request excessive amounts, Auto-Approve saves you from manually approving everything. If you want more control, leave it off and approve requests yourself. Request limits (below) can also help manage this.
 
 ## Sharing with Others
 
