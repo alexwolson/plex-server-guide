@@ -2,6 +2,34 @@
 
 In this chapter, we'll deploy all the containerized services using Docker Compose.
 
+## What is Docker?
+
+Docker is a tool that runs applications in isolated **containers**. Think of a container as a lightweight, self-contained package that includes everything an application needs to run—the code, libraries, and dependencies—all bundled together.
+
+**Why use Docker for a media server?**
+
+- **No dependency conflicts**: Each service runs in its own container with its own dependencies. Sonarr can use one version of a library while Radarr uses another—they never interfere with each other.
+- **Easy updates**: Updating a service is as simple as pulling a new container image. If an update breaks something, you can instantly roll back.
+- **Clean removal**: Removing a service removes everything associated with it. No leftover files scattered across your system.
+- **Consistent configuration**: Container configurations are defined in files that can be backed up, shared, and version-controlled.
+- **Resource efficiency**: Containers share your system's kernel, using far less overhead than running separate virtual machines.
+
+Without Docker, installing Sonarr, Radarr, Prowlarr, and the other services would require managing Python versions, .NET runtimes, and various dependencies—often leading to conflicts. Docker eliminates this complexity.
+
+## What is Docker Compose?
+
+While Docker runs individual containers, **Docker Compose** orchestrates multiple containers as a unified stack. Instead of running separate `docker run` commands for each service, you define everything in a single `docker-compose.yml` file.
+
+**Benefits of Docker Compose:**
+
+- **Single file configuration**: All your services, their settings, ports, and volumes are defined in one place
+- **Simple commands**: `docker compose up -d` starts everything; `docker compose down` stops everything
+- **Service networking**: Containers can communicate with each other by name (e.g., Sonarr can reach qBittorrent at `http://qbittorrent:8080`)
+- **Dependency management**: You can specify that qBittorrent should only start after the VPN container is running
+- **Easy updates**: `docker compose pull && docker compose up -d` updates all services to their latest versions
+
+The `docker-compose.yml` file we'll create defines the entire media server stack. You can version control it, back it up, and use it to recreate your setup on new hardware.
+
 ## Overview
 
 We'll start these services:
@@ -13,10 +41,28 @@ We'll start these services:
 | **sonarr** | TV show automation | 8989 |
 | **radarr** | Movie automation | 7878 |
 | **prowlarr** | Indexer management | 9696 |
-| **bazarr** | Subtitle automation | 6767 |
-| **jellyseerr** | Request management | 5055 |
-| **caddy** | Reverse proxy | 80, 443 |
-| **ddns-updater** | Dynamic DNS updates | - |
+| **bazarr** | Subtitle automation *(optional)* | 6767 |
+| **jellyseerr** | Request management *(optional)* | 5055 |
+| **caddy** | Reverse proxy *(optional)* | 80, 443 |
+| **ddns-updater** | Dynamic DNS updates *(optional)* | - |
+
+## Choose Your Services
+
+The Docker Compose file below includes all available services, but **you only need to include the ones you want to use**. Here's what each service does:
+
+**Core services** (recommended):
+- **nordlynx + qbittorrent**: VPN-protected downloads (required for torrenting)
+- **sonarr**: TV show automation
+- **radarr**: Movie automation
+- **prowlarr**: Manages your indexers and syncs them to Sonarr/Radarr
+
+**Optional services**:
+- **bazarr**: Automatic subtitle downloads—skip if you don't need subtitles
+- **jellyseerr**: Lets others request content—skip if you're the only user
+- **caddy**: Reverse proxy for HTTPS access—only needed if you want domain-based URLs (see [Part 3](14-domain-and-dns.md))
+- **ddns-updater**: Keeps your domain pointed at your IP—only needed with Caddy and a dynamic IP
+
+**To remove a service you don't need:** Simply delete that service's entire block from `docker-compose.yml` before running `docker compose up`. For example, if you don't want Bazarr, delete everything from `bazarr:` down to (but not including) the next service definition.
 
 ## Prerequisites
 
