@@ -8,15 +8,53 @@ Before installing anything, let's make sure you have the right hardware and a cl
 
 **Why Intel?** Hardware transcoding (converting video formats on-the-fly) is crucial for streaming. Intel's Quick Sync Video (QSV) is well-supported by Plex and works reliably on Linux.
 
+#### Understanding Video Codecs and Transcoding
+
+Video files use **codecs** (compression algorithms) to store video data efficiently. Common codecs include:
+
+- **H.264 (AVC)** - The most common codec. Nearly everything supports it.
+- **H.265 (HEVC)** - Newer, ~50% smaller files than H.264 at same quality. Common in 4K content.
+- **VP9** - Google's codec, used heavily by YouTube.
+- **AV1** - Newest codec, even better compression than HEVC. Growing adoption.
+
+When a client device (phone, TV, browser) can't directly play a video's codec, Plex must **transcode** it - decode the original and re-encode it in a compatible format in real-time. This is computationally expensive.
+
+**Hardware transcoding** offloads this work to dedicated circuits in your CPU's integrated graphics, allowing multiple simultaneous transcodes without breaking a sweat. Software transcoding uses raw CPU power and struggles with more than one or two streams.
+
+#### Quick Sync Video (QSV) Codec Support
+
+Not all Intel CPUs support all codecs. Here's what each generation can hardware encode AND decode:
+
+| Generation | Architecture | H.264 | H.265 (HEVC) | VP9 | AV1 |
+|------------|--------------|-------|--------------|-----|-----|
+| 2nd-3rd | Sandy/Ivy Bridge | ✓ | - | - | - |
+| 4th | Haswell | ✓ | - | - | - |
+| 5th | Broadwell | ✓ | - | - | - |
+| 6th | Skylake | ✓ | 8-bit only | - | - |
+| 7th-10th | Kaby Lake → Comet Lake | ✓ | ✓ (10-bit) | decode only | - |
+| 11th | Ice Lake / Tiger Lake | ✓ | ✓ (10-bit) | ✓ | decode only |
+| 12th-14th | Alder Lake → Raptor Lake | ✓ | ✓ (10-bit) | ✓ | decode only |
+| Arc GPUs | Alchemist | ✓ | ✓ | ✓ | ✓ |
+
+**What this means in practice:**
+- **7th gen (Kaby Lake) or newer** is the sweet spot - full H.264 and H.265/HEVC 10-bit support covers 95%+ of content
+- **6th gen (Skylake)** works but struggles with HDR content (10-bit HEVC)
+- **Older than 6th gen** can only transcode H.264, which is increasingly limiting as HEVC becomes standard
+- **AV1 encoding** requires an Intel Arc GPU (discrete) if you need it
+
+> **Warning: F-series and certain desktop CPUs have NO integrated graphics.** Models like i5-12400**F**, i7-13700**F**, etc. have the "F" suffix indicating no iGPU - these cannot do QSV transcoding at all. Similarly, some high-end desktop (HEDT) chips like X-series have no iGPU. Always verify your CPU has Intel UHD or Iris graphics.
+
+#### Recommended CPUs
+
 | Level | CPU Generation | Example CPUs | Notes |
 |-------|---------------|--------------|-------|
-| Minimum | 7th gen+ | i3-7100, Pentium G4560 | 1-2 simultaneous transcodes |
+| Minimum | 7th gen+ | i3-7100, Pentium G4560 | 1-2 simultaneous transcodes, full HEVC |
 | Recommended | 10th gen+ | i3-10100, i5-10400 | 3-4 simultaneous transcodes |
-| Overkill | 12th gen+ | i5-12400, i7-12700 | Many transcodes, HEVC support |
+| Overkill | 12th gen+ | i5-12400, i7-12700 | Many transcodes, VP9 support |
 
-**AMD alternative:** AMD CPUs work but lack hardware transcoding equivalent to Intel QSV. You'll need a more powerful CPU for software transcoding, or add a dedicated GPU.
+**AMD alternative:** AMD CPUs work but lack hardware transcoding equivalent to Intel QSV. You'll need a more powerful CPU for software transcoding, or add a dedicated GPU (AMD or NVIDIA).
 
-**Used hardware:** Older Intel workstations (Dell OptiPlex, HP ProDesk, Lenovo ThinkCentre) are excellent budget options. A used i5-8500 workstation often costs less than $150.
+**Used hardware:** Older Intel workstations (Dell OptiPlex, HP ProDesk, Lenovo ThinkCentre) are excellent budget options. A used i5-8500 workstation often costs less than $150 and handles HEVC perfectly.
 
 ### RAM: 8GB Minimum
 
@@ -28,21 +66,18 @@ Before installing anything, let's make sure you have the right hardware and a cl
 
 The *arr applications (Sonarr, Radarr, Prowlarr) each use 200-500MB. Plex uses more during transcoding.
 
-### Storage: SSD + HDD
+### Storage
 
-**You need two types of storage:**
+**Single drive works fine.** You can run everything on one SSD or one HDD. A 1TB+ drive is enough to get started.
 
-#### 1. SSD (Fast) - For OS, downloads, and configs
-- **Minimum:** 256GB
-- **Recommended:** 512GB
-- **Purpose:** Operating system, active downloads, service configurations
+**SSD + HDD is recommended** if you want the best of both worlds:
 
-#### 2. HDD (Large) - For media library
-- **Size:** Depends on your library (1TB minimum, 4TB+ recommended)
-- **Purpose:** Long-term storage of movies and TV shows
-- **Speed:** 5400 RPM is fine, 7200 RPM is better
+| Drive | Purpose | Recommendation |
+|-------|---------|----------------|
+| SSD | OS, downloads, configs | 256GB minimum, 512GB recommended |
+| HDD | Media library | 1TB minimum, 4TB+ recommended |
 
-**Why both?** Torrent downloads involve lots of random read/write operations that HDDs handle poorly. Using an SSD for downloads and moving completed files to the HDD gives you the best of both worlds.
+**Why two drives?** Torrent downloads involve lots of random read/write operations that HDDs handle poorly. Using an SSD for active downloads and moving completed files to the HDD gives better performance. But this is an optimization, not a requirement.
 
 #### Storage Math
 
@@ -81,8 +116,7 @@ Complete this checklist before starting the installation:
 
 - [ ] Computer with Intel CPU (or AMD with GPU)
 - [ ] At least 8GB RAM
-- [ ] SSD (256GB+) for OS and downloads
-- [ ] HDD for media storage
+- [ ] Storage: single drive (1TB+) or SSD + HDD combo
 - [ ] Ethernet cable and router access
 - [ ] Monitor and keyboard (for initial setup)
 
@@ -117,44 +151,46 @@ If you want a custom domain:
 Decide where your media will live:
 
 ```
-/data/media/           # HDD mount point
+/data/media/           # Media storage (second drive or folder on main drive)
 ├── movies/            # Movie library
 ├── tv/                # TV show library
 └── homevideo/         # Personal videos (optional)
 
 /home/your-username/
-├── downloads/         # SSD
+├── downloads/         # Active downloads
 │   ├── complete/      # Finished downloads
 │   └── incomplete/    # In-progress downloads
-└── mediaserver/       # SSD
-    └── config/        # Service configurations
+└── mediaserver/       # Service configurations
+    └── config/
 ```
 
-- [ ] Know where your HDD will be mounted
 - [ ] Know your username on the server
 
 ## Example Builds
 
-### Budget Build (~$150)
+### Minimal Build (~$100)
 
 - **Used Dell OptiPlex 7050** with i5-7500
 - 8GB DDR4 RAM (included)
-- 256GB SSD (included or $25)
-- 4TB WD Blue HDD ($80)
+- 1TB HDD (included) - single drive setup
+
+### Budget Build (~$200)
+
+- **Used Dell OptiPlex 7050** with i5-7500
+- 8GB DDR4 RAM (included)
+- 256GB SSD + 4TB WD Blue HDD
 
 ### Mid-Range Build (~$400)
 
 - **Used Dell OptiPlex 7080** with i5-10500
 - 16GB DDR4 RAM
-- 512GB NVMe SSD
-- 8TB WD Red Plus HDD
+- 512GB NVMe SSD + 8TB WD Red Plus HDD
 
 ### New Build (~$600+)
 
 - **Intel NUC or mini PC** with i5-12th gen
 - 32GB DDR4 RAM
-- 1TB NVMe SSD
-- 12TB Seagate Exos HDD
+- 2TB NVMe SSD (single drive) or 1TB SSD + 12TB HDD
 
 ## Pre-Installation Tasks
 
@@ -195,7 +231,7 @@ Fill in these decisions before proceeding:
 | Decision | Your Choice |
 |----------|-------------|
 | Server username | _____________ |
-| HDD mount point | `/data` or _____________ |
+| Media storage path | `/data` (default) or _____________ |
 | Domain name (optional) | _____________ |
 | Static IP address | _____________ |
 

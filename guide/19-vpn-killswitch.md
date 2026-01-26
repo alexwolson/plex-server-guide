@@ -36,10 +36,15 @@ mkdir -p ~/mediaserver/scripts
 
 ## Step 2: Create the Kill-Switch Script
 
-Create `~/mediaserver/scripts/nordlynx-killswitch.sh`:
+Create the script file:
 
 ```bash
-cat << 'SCRIPT' > ~/mediaserver/scripts/nordlynx-killswitch.sh
+nano ~/mediaserver/scripts/nordlynx-killswitch.sh
+```
+
+Add the following content:
+
+```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -122,8 +127,9 @@ done
 iptables -I DOCKER-USER ${rule_index} -i "${BR_IF}" -s "${NLX_IP}" ! -o "${BR_IF}" -m comment --comment "${COMMENT_TAG}" -j DROP
 
 echo "Applied nordlynx kill-switch rules for ${NLX_IP} via ${BR_IF} -> ${VPN_EP} on ${WAN_IF} (DNS: ${DNS_SERVERS})"
-SCRIPT
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 Make it executable:
 ```bash
@@ -135,7 +141,12 @@ chmod +x ~/mediaserver/scripts/nordlynx-killswitch.sh
 Create the service file:
 
 ```bash
-sudo tee /etc/systemd/system/nordlynx-killswitch.service << 'EOF'
+sudo nano /etc/systemd/system/nordlynx-killswitch.service
+```
+
+Add the following content (replacing `your-username` with your actual username):
+
+```ini
 [Unit]
 Description=Nordlynx Kill-Switch (iptables rules)
 After=docker.service
@@ -150,21 +161,23 @@ RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
-EOF
 ```
 
-**Important:** Replace `your-username` with your actual username.
+Save and exit (Ctrl+X, then Y, then Enter).
 
-```bash
-sudo sed -i "s/your-username/$USER/" /etc/systemd/system/nordlynx-killswitch.service
-```
+**Important:** Make sure to replace `your-username` in the `ExecStart` line with your actual username.
 
 ## Step 4: Create Systemd Timer
 
 The timer refreshes rules every 5 minutes (handles VPN endpoint changes):
 
 ```bash
-sudo tee /etc/systemd/system/nordlynx-killswitch.timer << 'EOF'
+sudo nano /etc/systemd/system/nordlynx-killswitch.timer
+```
+
+Add the following content:
+
+```ini
 [Unit]
 Description=Refresh nordlynx kill-switch rules periodically
 
@@ -175,8 +188,9 @@ Persistent=true
 
 [Install]
 WantedBy=timers.target
-EOF
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 ## Step 5: Enable and Start
 

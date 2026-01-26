@@ -100,8 +100,8 @@ For a simpler approach without Docker:
 ### Install get-iplayer
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y get-iplayer
+sudo apt update
+sudo apt install -y get-iplayer
 ```
 
 ### Configure

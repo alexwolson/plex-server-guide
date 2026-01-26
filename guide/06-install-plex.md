@@ -36,8 +36,8 @@ echo "deb [signed-by=/usr/share/keyrings/plex.gpg] https://downloads.plex.tv/rep
 ### 3. Install Plex
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y plexmediaserver
+sudo apt update
+sudo apt install -y plexmediaserver
 ```
 
 ### 4. Enable and Start Plex
@@ -118,7 +118,7 @@ You can always add more libraries later from **Settings > Libraries**.
 
 ## Hardware Transcoding
 
-Hardware transcoding uses your Intel CPU's Quick Sync to convert video formats efficiently. This requires a Plex Pass subscription.
+Hardware transcoding uses your Intel CPU's Quick Sync to convert video formats efficiently. This requires a [Plex Pass](../appendices/F-plex-pass-features.md) subscription.
 
 ### Verify Intel QSV is Available
 

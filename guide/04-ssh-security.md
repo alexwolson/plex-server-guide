@@ -63,7 +63,12 @@ If you're not prompted for a password, key-based authentication is working.
 On your server, create a new SSH configuration file:
 
 ```bash
-sudo tee /etc/ssh/sshd_config.d/99-hardened.conf << 'EOF'
+sudo nano /etc/ssh/sshd_config.d/99-hardened.conf
+```
+
+Add the following content (replacing `your-username` with your actual username):
+
+```
 # SSH Hardening Config
 # Disable password authentication (key-only)
 PasswordAuthentication no
@@ -72,17 +77,13 @@ KbdInteractiveAuthentication no
 # Disable root login
 PermitRootLogin no
 
-# Only allow specific user(s) - change 'your-username' to your actual username
+# Only allow specific user(s) - CHANGE THIS to your actual username
 AllowUsers your-username
-EOF
 ```
 
-> **Important:** Replace `your-username` with your actual username in the `AllowUsers` line.
+> **Important:** Make sure to change `your-username` in the `AllowUsers` line to your actual username (e.g., `AllowUsers alex`).
 
-For example, if your username is `alex`:
-```bash
-sudo sed -i 's/your-username/alex/' /etc/ssh/sshd_config.d/99-hardened.conf
-```
+Save and exit (Ctrl+X, then Y, then Enter).
 
 ### Test the Configuration
 
@@ -132,13 +133,18 @@ fail2ban monitors log files and automatically bans IPs that show malicious signs
 ### Install fail2ban
 
 ```bash
-sudo apt-get update && sudo apt-get install -y fail2ban
+sudo apt update && sudo apt install -y fail2ban
 ```
 
 ### Create fail2ban Configuration for SSH
 
 ```bash
-sudo tee /etc/fail2ban/jail.d/ssh.local << 'EOF'
+sudo nano /etc/fail2ban/jail.d/ssh.local
+```
+
+Add the following content:
+
+```
 [sshd]
 enabled = true
 port = ssh
@@ -147,8 +153,9 @@ logpath = /var/log/auth.log
 maxretry = 5
 findtime = 600
 bantime = 3600
-EOF
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 This configuration:
 - **maxretry = 5** - Ban after 5 failed attempts

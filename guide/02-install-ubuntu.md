@@ -55,28 +55,26 @@ Keep the default Ubuntu mirror. It will auto-select one near you.
 
 ### 7. Storage Configuration
 
-This is where you configure your SSD. **Read carefully.**
+This is where you configure your boot drive. **Read carefully.**
 
-#### Simple Setup (Single SSD)
+#### Simple Setup (Single Drive)
 
-If you have one SSD for the OS:
+If you have one drive (SSD or HDD):
 
 1. Select **Use an entire disk**
-2. Choose your SSD
+2. Choose your drive
 3. Confirm the storage layout
 
-#### Advanced Setup (SSD + HDD)
+#### Two-Drive Setup
 
-If you have both SSD and HDD installed:
+If you have two drives (e.g., SSD for OS + HDD for media):
 
-1. Select **Custom storage layout**
-2. Configure the SSD for the root partition:
-   - Select the SSD
-   - Add GPT partition table
-   - Create partition: mount point `/`, format `ext4`, use entire SSD
-3. **Do not** configure the HDD during installation - we'll mount it later
+1. Select **Use an entire disk**
+2. Choose your **boot drive** (typically the SSD)
+3. Confirm the storage layout
+4. **Do not** configure the second drive during installation - we'll mount it later in [Chapter 5](05-storage-setup.md)
 
-> **Tip:** It's easier to mount the HDD after Ubuntu is installed. Focus on getting the SSD configured correctly.
+> **Tip:** It's easier to mount additional drives after Ubuntu is installed. Focus on getting the boot drive configured correctly.
 
 ### 8. Profile Setup
 

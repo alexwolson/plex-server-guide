@@ -151,7 +151,7 @@ If your ISP uses CGNAT:
 
 If you can't get direct connections:
 1. Relay still works but is limited to ~2 Mbps
-2. Consider Plex Pass for relay priority
+2. Consider [Plex Pass](../appendices/F-plex-pass-features.md) for relay priority
 3. Try during off-peak hours
 
 ### Buffering Issues
@@ -177,7 +177,7 @@ When sharing your server:
 - Plex app (free on most platforms)
 - Accept your invite
 
-## Mobile Sync (Plex Pass)
+## Mobile Sync ([Plex Pass](../appendices/F-plex-pass-features.md))
 
 With Plex Pass, users can download content for offline viewing:
 

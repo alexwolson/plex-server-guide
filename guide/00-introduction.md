@@ -55,7 +55,7 @@ Before starting, set up these accounts:
 | Account | Required? | Purpose |
 |---------|-----------|---------|
 | NordVPN | Yes | VPN protection for downloads |
-| Plex | Yes | Free account for basic features, Plex Pass for hardware transcoding |
+| Plex | Yes | Free account required; [Plex Pass](../appendices/F-plex-pass-features.md) optional for premium features |
 | Domain registrar (Porkbun recommended) | Optional | Pretty URLs like `https://media.example.com` (Plex works without this) |
 | OpenSubtitles.org | Optional | For automatic subtitle downloads |
 

@@ -98,14 +98,25 @@ Check Sonarr/Radarr activity for stuck imports.
 Create a simple disk space check script:
 
 ```bash
-cat << 'EOF' > ~/scripts/check-disk.sh
+mkdir -p ~/scripts
+nano ~/scripts/check-disk.sh
+```
+
+Add the following content:
+
+```bash
 #!/bin/bash
 THRESHOLD=90
 USAGE=$(df /data | tail -1 | awk '{print $5}' | tr -d '%')
 if [ "$USAGE" -gt "$THRESHOLD" ]; then
   echo "Warning: Disk usage is ${USAGE}%"
 fi
-EOF
+```
+
+Save and exit (Ctrl+X, then Y, then Enter).
+
+Make it executable:
+```bash
 chmod +x ~/scripts/check-disk.sh
 ```
 
@@ -151,8 +162,15 @@ echo "Backup complete: /data/backups/$(date +%Y%m%d)/"
 
 ### Automated Backup Script
 
+Create the backup script:
+
 ```bash
-cat << 'EOF' > ~/scripts/backup.sh
+nano ~/scripts/backup.sh
+```
+
+Add the following content:
+
+```bash
 #!/bin/bash
 BACKUP_DIR="/data/backups/$(date +%Y%m%d)"
 mkdir -p "$BACKUP_DIR"
@@ -166,7 +184,12 @@ docker compose up -d
 find /data/backups -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
 
 echo "Backup saved to $BACKUP_DIR"
-EOF
+```
+
+Save and exit (Ctrl+X, then Y, then Enter).
+
+Make it executable:
+```bash
 chmod +x ~/scripts/backup.sh
 ```
 

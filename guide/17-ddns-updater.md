@@ -26,10 +26,15 @@ mkdir -p ~/mediaserver/config/ddns
 
 ## Step 2: Create Configuration File
 
-Create `~/mediaserver/config/ddns/config.json`:
+Create the configuration file:
 
 ```bash
-cat << 'EOF' > ~/mediaserver/config/ddns/config.json
+nano ~/mediaserver/config/ddns/config.json
+```
+
+Add the following content:
+
+```json
 {
   "settings": [
     {
@@ -61,16 +66,11 @@ cat << 'EOF' > ~/mediaserver/config/ddns/config.json
     }
   ]
 }
-EOF
 ```
 
-Edit the file to add your actual values:
+Save and exit (Ctrl+X, then Y, then Enter).
 
-```bash
-nano ~/mediaserver/config/ddns/config.json
-```
-
-Replace:
+**Important:** Replace:
 - `your-domain.com` with your actual domain
 - `pk1_your_api_key` with your Porkbun API key
 - `sk1_your_secret_key` with your Porkbun API secret

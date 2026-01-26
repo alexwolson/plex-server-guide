@@ -2,120 +2,37 @@
 
 This chapter covers setting up the directory structure for your media library and downloads.
 
-## Overview
+## Choose Your Setup
 
-We'll create two directory structures:
+**Pick the option that matches your hardware:**
 
-1. **Media directories** (on HDD) - Long-term storage for your movies and TV shows
-2. **Download directories** (on SSD) - Temporary storage for active downloads
+- **[Option A: Single Drive](#option-a-single-drive-setup)** - One SSD or HDD for everything
+- **[Option B: Two Drives](#option-b-two-drive-setup)** - SSD for downloads + HDD for media storage
 
-## Why Separate Storage?
-
-| Location | Purpose | Why? |
-|----------|---------|------|
-| SSD (downloads) | Active torrents | Torrenting requires lots of random I/O; SSDs handle this well |
-| HDD (media) | Completed media | Sequential access for streaming; HDDs offer more capacity per dollar |
-
-The *arr applications (Sonarr/Radarr) automatically move completed downloads from the SSD to the HDD.
+Both work great. Two drives offer better performance for torrenting, but a single drive is simpler and perfectly functional.
 
 ## Prerequisites
 
-- Ubuntu installed with SSD for root filesystem
-- HDD available (may need mounting)
+- Ubuntu installed
+- Storage drive(s) available
 
-## Part 1: Mount Your HDD (If Needed)
+---
 
-If your HDD is already mounted at `/data`, skip to [Part 2](#part-2-create-media-directories).
+## Option A: Single Drive Setup
 
-### Find Your HDD
+Use this if you have one drive (SSD or HDD) for everything.
 
-```bash
-lsblk
-```
-
-Look for your HDD. It will be something like `sdb` or `sdc` (not `sda` which is usually your SSD).
-
-Example output:
-```
-NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda      8:0    0 476.9G  0 disk
-├─sda1   8:1    0   512M  0 part /boot/efi
-└─sda2   8:2    0 476.4G  0 part /
-sdb      8:16   0   3.6T  0 disk
-└─sdb1   8:17   0   3.6T  0 part
-```
-
-In this example, `sdb1` is the HDD partition.
-
-### Check if HDD Has a Filesystem
-
-```bash
-sudo blkid /dev/sdb1
-```
-
-If it shows a filesystem type (like `ext4` or `ntfs`), the drive is formatted.
-
-### Format the HDD (If Needed)
-
-> **Warning:** This erases all data on the drive!
-
-If the drive is new or you want to start fresh:
-
-```bash
-sudo mkfs.ext4 -L mediastore /dev/sdb1
-```
-
-### Create Mount Point
+### Step 1: Create the Data Directory
 
 ```bash
 sudo mkdir -p /data
+sudo chown $USER:$USER /data
 ```
 
-### Get the UUID
+### Step 2: Create Media Directories
 
 ```bash
-sudo blkid /dev/sdb1 | grep -oP 'UUID="\K[^"]+'
-```
-
-Copy this UUID for the next step.
-
-### Add to fstab for Automatic Mounting
-
-```bash
-# Replace YOUR-UUID-HERE with the actual UUID from above
-echo 'UUID=YOUR-UUID-HERE /data ext4 defaults 0 2' | sudo tee -a /etc/fstab
-```
-
-Or edit fstab manually:
-```bash
-sudo nano /etc/fstab
-```
-
-Add this line (with your actual UUID):
-```
-UUID=your-uuid-here /data ext4 defaults 0 2
-```
-
-### Mount the Drive
-
-```bash
-sudo mount -a
-```
-
-### Verify Mount
-
-```bash
-df -h /data
-```
-
-You should see your HDD mounted at `/data`.
-
-## Part 2: Create Media Directories
-
-Create the directory structure for your media library:
-
-```bash
-sudo mkdir -p /data/media/{movies,tv,homevideo}
+mkdir -p /data/media/{movies,tv,homevideo}
 ```
 
 This creates:
@@ -126,36 +43,7 @@ This creates:
 └── homevideo/   # Personal videos (optional)
 ```
 
-### Set Ownership
-
-Set ownership to your user:
-
-```bash
-sudo chown -R $USER:$USER /data/media
-```
-
-### Set Permissions
-
-```bash
-chmod -R 755 /data/media
-```
-
-### Verify
-
-```bash
-ls -la /data/media/
-```
-
-Expected output:
-```
-drwxr-xr-x movies
-drwxr-xr-x tv
-drwxr-xr-x homevideo
-```
-
-## Part 3: Create Download Directories
-
-Create the download directory structure on your SSD:
+### Step 3: Create Download Directories
 
 ```bash
 mkdir -p ~/downloads/{incomplete,complete}
@@ -168,38 +56,144 @@ This creates:
 └── complete/      # Finished downloads (awaiting import)
 ```
 
-### Verify
-
-```bash
-ls -la ~/downloads/
-```
-
-Expected output:
-```
-drwxrwxr-x complete
-drwxrwxr-x incomplete
-```
-
-## Part 4: Create Mediaserver Config Directory
-
-This is where all your Docker service configurations will live:
+### Step 4: Create Mediaserver Config Directory
 
 ```bash
 mkdir -p ~/mediaserver/config
 ```
 
-## Directory Reference
+### Step 5: Verify Everything
 
-Here's a summary of all the directories we've created:
+```bash
+ls -la /data/media/
+ls -la ~/downloads/
+```
 
-| Directory | Purpose | Location |
-|-----------|---------|----------|
-| `/data/media/movies` | Movie library | HDD |
-| `/data/media/tv` | TV show library | HDD |
-| `/data/media/homevideo` | Personal videos | HDD |
-| `~/downloads/complete` | Finished downloads | SSD |
-| `~/downloads/incomplete` | In-progress downloads | SSD |
-| `~/mediaserver/config` | Service configurations | SSD |
+You should see the directories you created.
+
+**Done!** Skip to [Application Paths](#application-paths) below.
+
+---
+
+## Option B: Two-Drive Setup
+
+Use this if you have an SSD (for OS and downloads) and a separate HDD (for media storage).
+
+**Why two drives?** Torrent downloads involve lots of random I/O that SSDs handle well. Media files are large and accessed sequentially, so HDDs work great and offer more capacity per dollar. The *arr applications automatically move completed downloads from SSD to HDD.
+
+### Step 1: Find Your Second Drive
+
+```bash
+lsblk
+```
+
+Look for your second drive. It will be something like `sdb` or `sdc` (not `sda` which is usually your boot drive).
+
+Example output:
+```
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 476.9G  0 disk
+├─sda1   8:1    0   512M  0 part /boot/efi
+└─sda2   8:2    0 476.4G  0 part /
+sdb      8:16   0   3.6T  0 disk
+└─sdb1   8:17   0   3.6T  0 part
+```
+
+In this example, `sdb1` is the second drive partition.
+
+### Step 2: Check if Drive Has a Filesystem
+
+```bash
+sudo blkid /dev/sdb1
+```
+
+If it shows a filesystem type (like `ext4` or `ntfs`), the drive is already formatted.
+
+### Step 3: Format the Drive (If Needed)
+
+> **Warning:** This erases all data on the drive!
+
+If the drive is new or you want to start fresh:
+
+```bash
+sudo mkfs.ext4 -L mediastore /dev/sdb1
+```
+
+### Step 4: Create Mount Point
+
+```bash
+sudo mkdir -p /data
+```
+
+### Step 5: Get the UUID
+
+```bash
+sudo blkid /dev/sdb1 | grep -oP 'UUID="\K[^"]+'
+```
+
+Copy this UUID for the next step.
+
+### Step 6: Add to fstab for Automatic Mounting
+
+Edit fstab:
+
+```bash
+sudo nano /etc/fstab
+```
+
+Add this line at the end (replacing `your-uuid-here` with the actual UUID):
+
+```
+UUID=your-uuid-here /data ext4 defaults 0 2
+```
+
+Save and exit (Ctrl+X, then Y, then Enter).
+
+### Step 7: Mount the Drive
+
+```bash
+sudo mount -a
+```
+
+Verify it mounted:
+
+```bash
+df -h /data
+```
+
+You should see your drive mounted at `/data`.
+
+### Step 8: Create Media Directories
+
+```bash
+sudo mkdir -p /data/media/{movies,tv,homevideo}
+sudo chown -R $USER:$USER /data/media
+chmod -R 755 /data/media
+```
+
+### Step 9: Create Download Directories (on SSD)
+
+```bash
+mkdir -p ~/downloads/{incomplete,complete}
+```
+
+Downloads go in your home directory (on the SSD) and get moved to `/data/media` (on the HDD) after completion.
+
+### Step 10: Create Mediaserver Config Directory
+
+```bash
+mkdir -p ~/mediaserver/config
+```
+
+### Step 11: Verify Everything
+
+```bash
+ls -la /data/media/
+ls -la ~/downloads/
+df -h /data
+```
+
+---
 
 ## Application Paths
 
@@ -229,9 +223,20 @@ When configuring applications later, use these paths:
 
 > **Note:** The paths in qBittorrent will be different from the host because they're mapped through Docker volumes. We'll cover this in [Chapter 7](07-docker-compose-stack.md).
 
+## Directory Summary
+
+| Directory | Purpose |
+|-----------|---------|
+| `/data/media/movies` | Movie library |
+| `/data/media/tv` | TV show library |
+| `/data/media/homevideo` | Personal videos |
+| `~/downloads/complete` | Finished downloads |
+| `~/downloads/incomplete` | In-progress downloads |
+| `~/mediaserver/config` | Service configurations |
+
 ## Troubleshooting
 
-### HDD Not Showing Up
+### Second Drive Not Showing Up
 
 1. Check if the drive is detected:
    ```bash

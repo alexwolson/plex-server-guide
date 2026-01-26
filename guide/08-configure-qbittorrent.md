@@ -84,28 +84,6 @@ These paths are inside the container. They map to your host directories:
 - `/downloads/complete` → `~/downloads/complete`
 - `/downloads/incomplete` → `~/downloads/incomplete`
 
-## Create Categories
-
-Categories help Sonarr and Radarr organize downloads. Each app uses its own category to avoid conflicts.
-
-### Create Sonarr Category
-
-1. Right-click in the left sidebar under **Categories**
-2. Click **Add category...**
-3. Name: `sonarr`
-4. Save Path: `/downloads/complete/sonarr`
-5. Click **Add**
-
-### Create Radarr Category
-
-1. Right-click in the left sidebar under **Categories**
-2. Click **Add category...**
-3. Name: `radarr`
-4. Save Path: `/downloads/complete/radarr`
-5. Click **Add**
-
-You should now see both categories in the sidebar.
-
 ## Configure Connection Settings
 
 ### Speed Limits (Optional)
@@ -115,14 +93,6 @@ If you want to limit bandwidth:
 1. Go to **Options** > **Speed** tab
 2. Set upload/download limits as desired
 3. Enable **Alternative Rate Limits** for scheduled limiting
-
-### Connection Settings
-
-1. Go to **Options** > **Connection** tab
-2. **Listening Port**: Leave as `6881` (handled by VPN)
-3. **Connections Limits**:
-   - Global maximum: `500`
-   - Per torrent: `100`
 
 ## Verify VPN is Working
 
@@ -156,7 +126,7 @@ These two IPs should be different.
 1. Go to [ipleak.net](https://ipleak.net)
 2. Click **Torrent Address detection**
 3. Download the magnet link
-4. Add it to qBittorrent
+4. Add it to qBittorrent (using the webUI)
 5. The website will show what IP is connecting
 
 This should show a VPN IP, not your home IP.

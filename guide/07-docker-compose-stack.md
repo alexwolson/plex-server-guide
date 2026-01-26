@@ -46,10 +46,15 @@ Quick summary:
 
 ## Step 3: Create the Environment File
 
-Create `~/mediaserver/.env`:
+Create the environment file:
 
 ```bash
-cat << 'EOF' > ~/mediaserver/.env
+nano ~/mediaserver/.env
+```
+
+Add the following content:
+
+```
 # ============================================
 # Home Media Server - Environment Configuration
 # ============================================
@@ -67,8 +72,9 @@ WIREGUARD_PRIVATE_KEY=YOUR_PRIVATE_KEY_HERE
 DOWNLOADS_PATH=/home/your-username/downloads
 MEDIA_PATH=/data/media
 CONFIG_PATH=/home/your-username/mediaserver/config
-EOF
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 **Important:** Edit this file and replace:
 - `YOUR_PRIVATE_KEY_HERE` with your actual NordVPN WireGuard private key
@@ -87,10 +93,15 @@ chmod 600 ~/mediaserver/.env
 
 ## Step 4: Create the Docker Compose File
 
-Create `~/mediaserver/docker-compose.yml`:
+Create the Docker Compose file:
 
 ```bash
-cat << 'EOF' > ~/mediaserver/docker-compose.yml
+nano ~/mediaserver/docker-compose.yml
+```
+
+Add the following content:
+
+```yaml
 services:
   # ===================
   # VPN + Download Client
@@ -227,8 +238,9 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/ddns:/updater/data
-EOF
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 > **Note:** We'll create the Caddyfile and DDNS config later in the Remote Access chapters.
 

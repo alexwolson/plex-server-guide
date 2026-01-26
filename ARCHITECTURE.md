@@ -263,13 +263,15 @@ flowchart TB
 
 ### Why This Layout?
 
-1. **SSD for downloads:** Torrent clients perform lots of random I/O. SSDs handle this much better than HDDs.
+> **Note:** A single drive works fine for all of this. The SSD + HDD separation below is an optimization, not a requirement.
+
+1. **SSD for downloads (recommended):** Torrent clients perform lots of random I/O. SSDs handle this better than HDDs.
 
 2. **SSD for configs:** Service databases benefit from fast storage, especially during searches and imports.
 
-3. **HDD for media:** Media files are large and accessed sequentially. HDDs provide cost-effective bulk storage.
+3. **HDD for media (if using two drives):** Media files are large and accessed sequentially. HDDs provide cost-effective bulk storage.
 
-4. **Separate download and media paths:** Sonarr/Radarr move completed files from downloads to media, keeping things organized.
+4. **Separate download and media paths:** Sonarr/Radarr move completed files from downloads to media, keeping things organized. With a single drive, this is just a move within the same filesystem.
 
 ## Security Layers
 

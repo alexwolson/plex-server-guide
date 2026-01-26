@@ -30,10 +30,15 @@ Caddy will:
 
 The Caddyfile tells Caddy how to route requests.
 
-Create `~/mediaserver/Caddyfile`:
+Create the Caddyfile:
 
 ```bash
-cat << 'EOF' > ~/mediaserver/Caddyfile
+nano ~/mediaserver/Caddyfile
+```
+
+Add the following content:
+
+```
 {
     email your-email@example.com
 }
@@ -52,17 +57,13 @@ sonarr.your-domain.com {
 radarr.your-domain.com {
     reverse_proxy radarr:7878
 }
-EOF
 ```
+
+Save and exit (Ctrl+X, then Y, then Enter).
 
 **Important:** Replace in the file:
 - `your-email@example.com` with your actual email (for Let's Encrypt notifications)
 - `your-domain.com` with your actual domain (in all three places)
-
-Edit the file:
-```bash
-nano ~/mediaserver/Caddyfile
-```
 
 ## Step 2: Create Caddy Directories
 

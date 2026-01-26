@@ -152,6 +152,7 @@ See [Hardware and Planning](guide/01-hardware-and-planning.md) for detailed requ
 | [C: Troubleshooting](appendices/C-troubleshooting.md) | Common problems and solutions |
 | [D: Service Ports](appendices/D-service-ports-reference.md) | Port reference table |
 | [E: File Paths](appendices/E-file-paths-reference.md) | Directory structure reference |
+| [F: Plex Pass Features](appendices/F-plex-pass-features.md) | Premium subscription features |
 
 ## Quick Reference
 
