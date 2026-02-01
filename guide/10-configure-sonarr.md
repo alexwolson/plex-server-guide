@@ -56,10 +56,7 @@ You'll be prompted to log in with your new credentials.
 Season {season:00}
 ```
 
-**Series Folder Format:**
-```
-{Series TitleYear} {imdb-{ImdbId}}
-```
+
 
 4. Click **Save Changes**
 
@@ -67,11 +64,20 @@ Season {season:00}
 
 Click **Show Advanced** at the top to see all options.
 
+### More naming formats
+
+Now visible with Advanced Settings, set **Series Folder Format:**
+
+```
+{Series TitleYear} {imdb-{ImdbId}}
+```
+
 ### Configure Root Folder Handling
 
-1. Under **File Management**, set:
+1. Under **Folders**, set:
+   - **Delete empty folders**: Enabled (optional)
+2. Under **File Management**, set:
    - **Unmonitor Deleted Episodes**: Enabled
-   - **Delete empty series folders**: Enabled (optional)
 
 ## Add Root Folder
 
