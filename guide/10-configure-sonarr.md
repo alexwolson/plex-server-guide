@@ -64,7 +64,7 @@ Season {season:00}
 
 Click **Show Advanced** at the top to see all options.
 
-### More naming formats
+### More Naming Formats
 
 Now visible with Advanced Settings, set **Series Folder Format:**
 
